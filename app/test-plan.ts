@@ -1,0 +1,1 @@
+export const tenPasses=["normal path","input validation","missing data","API failures/timeouts","conflicting sources","security boundaries","payment verification","support automation/escalation","regression","end-to-end"] as const;

@@ -1,0 +1,22 @@
+# Feature Checklist
+
+- [x] Five-source market adapter architecture
+- [x] Source-family-aware verification
+- [x] No invented price fallback
+- [x] API failure degradation
+- [x] Conflict detection
+- [x] NGX company discovery
+- [x] Dashboard
+- [x] Ask DELU flow
+- [x] Admin control center
+- [x] Support auto-resolution boundary
+- [x] Owner escalation
+- [x] Evolution proposal + owner gate
+- [x] Payment verification foundation
+- [x] Role boundary foundation
+- [x] Smoke tests
+- [ ] Production authentication
+- [ ] Persistent notification service
+- [ ] Production payment provider integration
+- [ ] Scheduled background sync worker
+- [ ] Production AI model connection

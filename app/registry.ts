@@ -1,0 +1,2 @@
+import {fetchAll} from "./sources";
+export async function discoverCompanies(){const r=await fetchAll();const m=new Map<string,{symbol:string,name:string,securityId:string|null}>();for(const s of r){for(const q of s.quotes){if(!q.symbol)continue;if(!m.has(q.symbol))m.set(q.symbol,{symbol:q.symbol,name:q.name||q.symbol,securityId:q.securityId??null})}}return [...m.values()].sort((a,b)=>a.symbol.localeCompare(b.symbol));}

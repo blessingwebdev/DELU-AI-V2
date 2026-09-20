@@ -1,0 +1,90 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+
+enum Role { USER PRO ADMIN OWNER }
+enum PaymentStatus { PENDING APPROVED REJECTED FLAGGED }
+
+model User {
+ id String @id @default(cuid())
+ email String @unique
+ passwordHash String
+ role Role @default(USER)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ watchlists Watchlist[]
+ payments Payment[]
+}
+
+model Security {
+ id String @id @default(cuid())
+ symbol String @unique
+ name String
+ sector String?
+ active Boolean @default(true)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ quotes Quote[]
+}
+
+model Quote {
+ id String @id @default(cuid())
+ securityId String
+ price Decimal?
+ currency String @default("NGN")
+ asOf DateTime
+ source String
+ verified Boolean @default(false)
+ freshnessSeconds Int?
+ security Security @relation(fields:[securityId], references:[id], onDelete:Cascade)
+ @@index([securityId, asOf])
+}
+
+model Watchlist {
+ id String @id @default(cuid())
+ userId String
+ name String @default("My Watchlist")
+ user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+ items WatchlistItem[]
+}
+
+model WatchlistItem {
+ id String @id @default(cuid())
+ watchlistId String
+ securityId String
+ watchlist Watchlist @relation(fields:[watchlistId], references:[id], onDelete:Cascade)
+ @@unique([watchlistId, securityId])
+}
+
+model Payment {
+ id String @id @default(cuid())
+ userId String
+ plan String
+ amount Decimal
+ reference String?
+ receiptUrl String?
+ status PaymentStatus @default(PENDING)
+ aiRiskScore Float?
+ user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+ createdAt DateTime @default(now())
+ reviewedAt DateTime?
+}
+
+model Incident {
+ id String @id @default(cuid())
+ severity String
+ title String
+ details String
+ resolved Boolean @default(false)
+ createdAt DateTime @default(now())
+ resolvedAt DateTime?
+}
+
+model AuditLog {
+ id String @id @default(cuid())
+ actorId String?
+ action String
+ entity String
+ entityId String?
+ metadata Json?
+ createdAt DateTime @default(now())
+}
